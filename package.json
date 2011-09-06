@@ -1,0 +1,9 @@
+{
+    "name": "browserid_ldapcertification",
+    "version": "0.0.1",
+    "dependencies": {
+      "ldapjs": "*",
+      "vows": "0.5.11"
+    }
+}
+
