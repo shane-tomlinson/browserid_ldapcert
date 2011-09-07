@@ -14,8 +14,15 @@ vows.describe("auth")
     topic: function() {
       MozillaLDAP.bind(username, password, this.callback);
     },    
-    "valid login": function(err) {
+
+    "valid login": function(err, creds) {
       assert.ifError(err, "an error occurred authenticating a valid login");
+    },
+
+    "credentials are given to us": function(err, creds) {
+      assert.ok(creds.username, 'A username is given to us');
+      assert.ok(creds.username.indexOf('@') > -1, 'a full email address?');
+      assert.ok(creds.password, 'A password is given to us');
     }
   }
 })
@@ -24,8 +31,15 @@ vows.describe("auth")
     topic: function() {
       MozillaLDAP.bind(usernameFull, password, this.callback);
     },    
-    "valid login": function(err) {
+
+    "valid login": function(err, creds) {
       assert.ifError(err, "an error occurred authenticating a valid login");
+    },
+
+    "credentials are given to us": function(err, creds) {
+      assert.ok(creds.username, 'A username is given to us');
+      assert.ok(creds.username.indexOf('@') > -1, 'a full email address?');
+      assert.ok(creds.password, 'A password is given to us');
     }
   }
 })

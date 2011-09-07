@@ -24,7 +24,10 @@ function bind(username, password, callback) {
     client.unbind();
     client = null;
     if (callback) {
-      callback(err);
+      callback(err, {
+        username: username,
+        password: password
+      });
     }
   });
 };

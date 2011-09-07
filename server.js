@@ -9,10 +9,10 @@ var PORT = process.env.PORT || 80;
 
 app.use(
   connect.basicAuth(function(user, password, callback) {
-    MozillaLDAP.bind(user, password, function(err) {
+    MozillaLDAP.bind(user, password, function(err, creds) {
       if (callback) {
         callback(err, {
-          username: user + '@mozilla.com' 
+          username: creds.username 
         });
       }
     });
