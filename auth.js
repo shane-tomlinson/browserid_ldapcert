@@ -15,18 +15,17 @@ var LDAP_SERVER_URL = 'ldaps://addressbook.mozilla.com:636';
  */
 function bind(username, password, callback) {
   var bindDN = 'mail=' + username + '@mozilla.com,o=com,dc=mozilla';
-/*  var client = ldap.createClient({
+  var client = ldap.createClient({
     url: LDAP_SERVER_URL
   });
 
   client.bind(bindDN, password, function(err) {
     client.unbind();
     client = null;
-    */
     if (callback) {
-      callback(null);
+      callback(err);
     }
- // });
+  });
 };
 
 exports.bind = bind;
