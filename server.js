@@ -10,7 +10,6 @@ var PORT = process.env.PORT || 80;
 app.use(
   connect.basicAuth(function(user, password, callback) {
     MozillaLDAP.bind(user, password, function(err) {
- //     console.log(err || 'successfully authenticated: ' + user + '@mozilla.com');  
       if (callback) {
         callback(err, {
           username: user + '@mozilla.com' 
@@ -41,7 +40,7 @@ app.get('/', function(req, res, next) {
 });
 
 
-app.listen(PORT || 0, function () {
+app.listen(PORT, function () {
   var address = app.address();
   fullServerAddress = address.address + ':' + address.port;
   console.log("listening on " + fullServerAddress);
