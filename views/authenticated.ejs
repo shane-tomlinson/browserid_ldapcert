@@ -1,7 +1,10 @@
-    Username: <%= username %>
 
     <form action="/sign_out" method="post">
-      <input type="submit" value="Sign Out" />
+      You are signed in as: <%= username %>.  This address will be automatically added to your list of addresses for <a href="https://browserid.org">BrowserID</a>.
+
+      <p>
+        <input type="submit" value="Sign Out" autofocus />
+      </p>
     </form>
 
   <script type="text/javascript" src="https://diresworb.org/include.js"></script>
