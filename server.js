@@ -5,6 +5,7 @@ var connect = require("connect");
 var MozillaLDAP = require("./auth");
 
 var app = express.createServer();
+var PORT = process.env.PORT || 80;
 
 app.use(
   connect.basicAuth(function(user, password, callback) {
@@ -40,4 +41,8 @@ app.get('/', function(req, res, next) {
 });
 
 
-app.listen(8000);
+app.listen(PORT || 0, function () {
+  var address = app.address();
+  fullServerAddress = address.address + ':' + address.port;
+  console.log("listening on " + fullServerAddress);
+});
