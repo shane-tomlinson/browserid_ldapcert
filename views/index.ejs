@@ -1,22 +1,19 @@
-<!doctype html>
+  <form action="/sign_in" method="post">
+    <div class="warning">
+      <p class="invalid_creds">
+        <img src="/ImgCritical_32.gif" width=32 height=32 alt="Error" />
+        The username or password is incorrect.  Verify that CAPS LOCK is not on, and then retype the current suername and password.
+      </p>
+    </div>
 
-<html>
-<head>
-  <title><%= title %></title>
+    <p>
+      <label for="username">Username:</label>
+      <input type="email" id="username" name="username" autofocus required />
+    </p>
+    <p>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+    </p>
+    <input type="submit" value="Sign In"/>
+  </form>
 
-</head>
-<body>
-    <h1>Authentication SUCCESS!</h1>
-
-    Username: <%= username %>
-  <script type="text/javascript" src="https://diresworb.org/include.js"></script>
-  <script type="text/javascript">
-    navigator.id.sessions = [{
-        email: "<%= username %>"
-    }];
-
-    navigator.id.username = "<%= username %>";
-  </script>
-  <script type="text/javascript" src="cert.js"></script>
-</body>
-</html>

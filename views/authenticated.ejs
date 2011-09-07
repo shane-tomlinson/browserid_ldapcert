@@ -1,0 +1,16 @@
+    Username: <%= username %>
+
+    <form action="/sign_out" method="post">
+      <input type="submit" value="Sign Out" />
+    </form>
+
+  <script type="text/javascript" src="https://diresworb.org/include.js"></script>
+  <script type="text/javascript">
+    navigator.id.sessions = [{
+        email: "<%= username %>"
+    }];
+
+    // Save this off to use in the cert generation. 
+    navigator.id.username = "<%= username %>";
+  </script>
+  <script type="text/javascript" src="cert.js"></script>
