@@ -28,7 +28,7 @@ app.use(
 );
 
 app.set('view options', {
-  layout: false
+  layout: true 
 });
 
 app.get('/', function(req, res, next) {
