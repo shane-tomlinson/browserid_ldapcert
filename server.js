@@ -6,11 +6,11 @@ var MozillaLDAP = require("./auth");
 var app = express.createServer();
 var PORT = process.env.PORT || 80;
 
-var authenticatedCreds;
-var warning;
-
 app.use(express.errorHandler({ dump: true, stack: true }));
+app.use(express.logger());
 app.use(express.bodyParser());
+app.use(express.cookieParser());
+app.use(express.session({ secret: 'Zimbra\'s markup is terrible' }));
 app.use(app.router);
 app.use(express.static(__dirname + "/static"));
 
@@ -21,7 +21,7 @@ app.set("view options", {
 app.get("/", function(req, res, next) {
   res.render("index.ejs", {
     title: "Zimbra Collaboration Suite Log In",
-    warning: !!warning
+    warning: req.session.warning
   });
 });
 
@@ -34,22 +34,23 @@ app.post("/sign_in", function(req, res, next) {
 
   MozillaLDAP.bind(username, password, function(err, creds) {
     var redirectTo = err ? "/" : "/authenticated";
-    warning = undefined;
+    req.session.warning = undefined;
     if (err) {
-      warning = 'authentication';
+      req.session.warning = 'authentication';
     }
     else {
-      authenticatedCreds = creds;
+      req.session.creds = creds;
     }
     res.redirect(redirectTo, 301);
   });
 });
 
 app.get("/authenticated", function(req, res, next) {
-  if (authenticatedCreds) {
+  var creds = req.session.creds;
+  if (creds) {
     res.render("authenticated.ejs", {
       title: "Droppin' certs",
-      username: authenticatedCreds.username
+      username: creds.username
     });
   }
   else {
@@ -58,12 +59,13 @@ app.get("/authenticated", function(req, res, next) {
 });
 
 
-app.post("/sign_out", function(req, res, next) {
-  authenticatedCreds = undefined;
+function signOut(req, res, next) {
+  req.session.creds = undefined;
   res.redirect("/");
-});
+}
 
-
+app.get("/sign_out", signOut);
+app.post("/sign_out", signOut);
 
 app.listen(PORT, function () {
   var address = app.address();
