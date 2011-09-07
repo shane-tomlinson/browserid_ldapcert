@@ -59,12 +59,13 @@ app.get("/authenticated", function(req, res, next) {
 });
 
 
-app.post("/sign_out", function(req, res, next) {
+function signOut(req, res, next) {
   req.session.creds = undefined;
   res.redirect("/");
-});
+}
 
-
+app.get("/sign_out", signOut);
+app.post("/sign_out", signOut);
 
 app.listen(PORT, function () {
   var address = app.address();

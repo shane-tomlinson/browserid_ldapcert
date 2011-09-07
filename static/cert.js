@@ -1,6 +1,13 @@
 
 
 (function() {
+  // Only make this available to W3C browsers
+  if (document.addEventListener) {
+    document.addEventListener("logout", function() {
+      document.location = '/sign_out'; 
+    }, false);
+  }
+
   var username = navigator.id.username;
   if (username) {
     // First, register the verified email which gets a public key.
