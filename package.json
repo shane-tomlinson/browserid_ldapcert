@@ -4,7 +4,8 @@
     "dependencies": {
       "connect": "1.7.0",
       "ldapjs": "0.1.2",
-      "vows": "0.5.11"
+      "vows": "0.5.11",
+      "express": "*"
     }
 }
 
