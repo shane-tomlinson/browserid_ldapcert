@@ -21,6 +21,7 @@ app.use(
 );
 
 app.use(app.router);
+app.use('/', express.errorHandler({ dump: true, stack: true }));
 
 app.use(
   express.static(__dirname + '/static')
