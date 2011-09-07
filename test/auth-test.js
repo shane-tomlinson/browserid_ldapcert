@@ -4,14 +4,15 @@ var vows = require("vows"),
     events = require("events");
     credentials = require("../credentials");
 
-var validUsername = credentials.username;
-var validPassword = credentials.password;
+var username = credentials.username;
+var usernameFull = credentials.usernameFull;
+var password = credentials.password;
 
 vows.describe("auth")
 .addBatch({
-  "authenticate valid": {
+  "authenticate with just username valid": {
     topic: function() {
-      MozillaLDAP.bind(validUsername, validPassword, this.callback);
+      MozillaLDAP.bind(username, password, this.callback);
     },    
     "valid login": function(err) {
       assert.ifError(err, "an error occurred authenticating a valid login");
@@ -19,9 +20,9 @@ vows.describe("auth")
   }
 })
 .addBatch({
-  "second authenticate valid": {
+  "authenticate with username@mozilla.com valid": {
     topic: function() {
-      MozillaLDAP.bind(validUsername, validPassword, this.callback);
+      MozillaLDAP.bind(usernameFull, password, this.callback);
     },    
     "valid login": function(err) {
       assert.ifError(err, "an error occurred authenticating a valid login");
