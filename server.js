@@ -3,7 +3,6 @@
 var express = require("express");
 var connect = require("connect");
 var MozillaLDAP = require("./auth");
-var credentials = require("./credentials");
 
 var app = express.createServer();
 
