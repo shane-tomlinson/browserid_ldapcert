@@ -6,6 +6,9 @@ var MozillaLDAP = require("./auth");
 var app = express.createServer();
 var PORT = process.env.PORT || 80;
 
+var authenticatedCreds;
+var warning;
+
 app.use(express.errorHandler({ dump: true, stack: true }));
 app.use(express.bodyParser());
 app.use(app.router);
@@ -17,11 +20,11 @@ app.set("view options", {
 
 app.get("/", function(req, res, next) {
   res.render("index.ejs", {
-    title: "You need to authenticate"
+    title: "Zimbra Collaboration Suite Log In",
+    warning: !!warning
   });
 });
 
-var authenticatedCreds;
 
 app.post("/sign_in", function(req, res, next) {
   console.log(req.body);
@@ -31,7 +34,11 @@ app.post("/sign_in", function(req, res, next) {
 
   MozillaLDAP.bind(username, password, function(err, creds) {
     var redirectTo = err ? "/" : "/authenticated";
-    if (!err) {
+    warning = undefined;
+    if (err) {
+      warning = 'authentication';
+    }
+    else {
       authenticatedCreds = creds;
     }
     res.redirect(redirectTo, 301);
