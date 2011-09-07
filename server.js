@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+//#!/usr/bin/env node
 
 var express = require("express");
 var connect = require("connect");
@@ -9,7 +9,7 @@ var app = express.createServer();
 app.use(
   connect.basicAuth(function(user, password, callback) {
     MozillaLDAP.bind(user, password, function(err) {
-      console.log(err || 'successfully authenticated: ' + user + '@mozilla.com');  
+ //     console.log(err || 'successfully authenticated: ' + user + '@mozilla.com');  
       if (callback) {
         callback(err, {
           username: user + '@mozilla.com' 
