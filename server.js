@@ -66,7 +66,6 @@ app.get("/", function(req, res, next) {
 
 
 app.post("/sign_in", function(req, res, next) {
-  console.log(req.body);
   var body = req.body || {};
   var username = body.username;
   var password = body.password;
