@@ -12,4 +12,5 @@ cd lib/jwcrypto
 ./bundle.sh
 cd ../..
 
-
+node-service-disable
+node server.js
