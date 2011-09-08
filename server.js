@@ -1,4 +1,4 @@
-//#!/usr/bin/env node
+#!/usr/bin/env node
 
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -35,8 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var express = require("express");
-var MozillaLDAP = require("./ldap_auth");
+"use strict";
+
+var express = require("express"),
+    MozillaLDAP = require("./lib/ldap_auth"),
+    certifier = require("./lib/certificates");
 
 var app = express.createServer();
 var PORT = process.env.PORT || 80;
@@ -69,14 +72,19 @@ app.post("/sign_in", function(req, res, next) {
 
   MozillaLDAP.bind(username, password, function(err, creds) {
     var redirectTo = err ? "/" : "/authenticated";
+    var httpCode = 301;
+
     req.session.warning = undefined;
+
     if (err) {
       req.session.warning = 'authentication';
+      // XXX put an authorization denied
     }
     else {
       req.session.creds = creds;
     }
-    res.redirect(redirectTo, 301);
+
+    res.redirect(redirectTo, httpCode);
   });
 });
 
@@ -93,7 +101,6 @@ app.get("/authenticated", function(req, res, next) {
   }
 });
 
-
 function signOut(req, res, next) {
   req.session.creds = undefined;
   res.redirect("/");
@@ -102,8 +109,33 @@ function signOut(req, res, next) {
 app.get("/sign_out", signOut);
 app.post("/sign_out", signOut);
 
+app.post("/api/generate_cert", function(req, res, next) {
+  var creds = req.session.creds;
+  if (creds) {
+    var email = creds.username;
+    var pubkey = req.body && req.body.pubkey;
+
+    if (email && pubkey) {
+      certifier.generateCertificate(email, pubkey, function(err, cert) {
+        if (!err) {
+          res.json({
+            certificate: cert,
+            update_url: "http://mozillaid.no.de/api/update_cert"
+          });
+        }
+      });
+    }
+    else {
+      res.send("Not enough information provided", 401);
+    }
+  }
+  else {
+    res.send("User must authenticate", 401);
+  }
+});
+
 app.listen(PORT, function () {
   var address = app.address();
-  fullServerAddress = address.address + ":" + address.port;
+  var fullServerAddress = address.address + ":" + address.port;
   console.log("listening on " + fullServerAddress);
 });
