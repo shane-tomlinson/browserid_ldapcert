@@ -1,0 +1,3 @@
+[submodule "lib/jwcrypto"]
+	path = lib/jwcrypto
+	url = git://github.com/mozilla/jwcrypto.git

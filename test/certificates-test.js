@@ -1,5 +1,3 @@
-/*globals $:true, console: true */
-
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -35,62 +33,27 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+var vows = require("vows"),
+    assert = require("assert"),
+    jwk = require("../lib/jwcrypto/jwk"),
+    certificates = require("../lib/certificates"),
+    events = require("events");
+    
+// signing
+var ALG = "RS";
+var KEYSIZE = 64;
 
-(function() {
-  "use strict";
-
-  function getCertificate(pubkey, callback) {
-    // Do something sly with the server to get a certificate
-    $.ajax({
-      type: 'post',
-      url: '/api/generate_cert',
-      data: {
-        pubkey: pubkey
-      },
-      success: function(status, data, xhr) {
-        if (callback) {
-          var certificate = data.certificate;
-          var updateURL = data.update_url;
-          callback(certificate, updateURL);
-        }
-      },
-      error: function() {
-
-      }
-    });
+vows.describe("certificates")
+.addBatch({
+  "generate cert": {
+    topic: function() {
+      var key = jwk.KeyPair.generate(ALG, KEYSIZE);
+      certificates.generateCertificate("test@test.com", key.publicKey, this.callback);
+    },
+    "cert is proper JWS format": function(err, certificate) {
+      assert.length(certificate.split('.'), 3);
+    }
   }
-
-
-  var email = navigator.id.username;
-  if (email) {
-    // First, register the verified email which gets a public key.
-    navigator.id.checkVerifiedEmail(email, function(exists) {
-      if (!exists) {
-        navigator.id.generateKey(function(pubkey) {
-
-          // secondly, get a certificate for the public key
-          getCertificate(pubkey, function(certificate, updateURL) {
-            console.log("certificate: " + certificate);
-            console.log("updateURL: " + updateURL);
-
-            // thirdly, register the certificate
-            navigator.id.registerVerifiedEmailCertificate(certificate, updateURL, 
-              function() {
-                // all done
-              });
-          });
-        });
-      }
-    });
-  }
-
-  // Listen for the logout message for w3c browsers. 
-  if (document.addEventListener) {
-    document.addEventListener("logout", function() {
-      document.location = '/sign_out'; 
-    }, false);
-  }
-
-
-}());
+})
+.export(module);
 
