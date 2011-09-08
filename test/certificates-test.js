@@ -36,7 +36,7 @@
 var vows = require("vows"),
     assert = require("assert"),
     jwk = require("../lib/jwcrypto/jwk"),
-    certificates = require("../certificates"),
+    certificates = require("../lib/certificates"),
     events = require("events");
     
 // signing

@@ -36,7 +36,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 var express = require("express");
-var MozillaLDAP = require("./auth");
+var MozillaLDAP = require("./ldap_auth");
 
 var app = express.createServer();
 var PORT = process.env.PORT || 80;

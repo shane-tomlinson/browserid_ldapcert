@@ -34,7 +34,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 var vows = require("vows"),
-    MozillaLDAP = require("../auth"),
+    MozillaLDAP = require("../lib/ldap_auth"),
     assert = require("assert"),
     events = require("events");
     credentials = require("../credentials");
