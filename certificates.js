@@ -36,8 +36,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 var jwcert = require("./lib/jwcrypto/jwcert"),
-    jwk = require("./lib/jwcrypto/jwk"),
-    KEYPAIR = jwk.KeyPair.generate("RS", 64);
+    keyPair = require("./issuer_key");
 
 // Who the cert is originating from. AKA - who are we?
 const ISSUER = "mozilla.com";
@@ -54,7 +53,7 @@ function generateCertificate(email, pubkey, callback) {
   var tok = new jwcert.JWCert(ISSUER, new Date(), pubkey, {
     email: email
   });
-  var cert = tok.sign(KEYPAIR.secretKey);
+  var cert = tok.sign(keyPair.secretKey);
   if (callback) {
     callback(null, cert);
   }
