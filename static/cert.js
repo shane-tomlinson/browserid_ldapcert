@@ -47,7 +47,7 @@
       data: {
         pubkey: pubkey
       },
-      success: function(status, data, xhr) {
+      success: function(data, status, xhr) {
         if (callback) {
           var certificate = data.certificate;
           var updateURL = data.update_url;
