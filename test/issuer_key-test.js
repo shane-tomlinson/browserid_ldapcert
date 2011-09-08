@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -35,8 +33,18 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var jwk = require("./lib/jwcrypto/jwk"),
-    KEYPAIR = jwk.KeyPair.generate("RS", 64);
+var vows = require("vows"),
+    assert = require("assert"),
+    issuerKey = require("../lib/issuer_key");
 
-console.log(KEYPAIR);
+
+vows.describe("issuer_key").addBatch({
+    "have secretKey" : {
+        topic: issuerKey.secretKey,
+        "is a key": function(secretKey) {
+          assert.ok(secretKey);
+        }
+    }
+})
+.export(module);
 
