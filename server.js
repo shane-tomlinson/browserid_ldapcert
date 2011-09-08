@@ -39,6 +39,7 @@
 
 var express = require("express"),
     MozillaLDAP = require("./lib/ldap_auth"),
+    jwk = require("./lib/jwcrypto/jwk"),
     certifier = require("./lib/certificates");
 
 var app = express.createServer();
@@ -67,25 +68,30 @@ app.get("/", function(req, res, next) {
 app.post("/sign_in", function(req, res, next) {
   console.log(req.body);
   var body = req.body || {};
-  var username = body.username || "";
-  var password = body.password || "";
+  var username = body.username;
+  var password = body.password;
 
-  MozillaLDAP.bind(username, password, function(err, creds) {
-    var redirectTo = err ? "/" : "/authenticated";
-    var httpCode = 301;
+  if (username && password) {
+    MozillaLDAP.bind(username, password, function(err, creds) {
+      var redirectTo = err ? "/" : "/authenticated";
+      var httpCode = 301;
 
-    req.session.warning = undefined;
+      req.session.warning = undefined;
 
-    if (err) {
-      req.session.warning = 'authentication';
-      // XXX put an authorization denied
-    }
-    else {
-      req.session.creds = creds;
-    }
+      if (err) {
+        req.session.warning = 'authentication';
+        // XXX put an authorization denied
+      }
+      else {
+        req.session.creds = creds;
+      }
 
-    res.redirect(redirectTo, httpCode);
-  });
+      res.redirect(redirectTo, httpCode);
+    });
+  }
+  else {
+    res.send("Not enough information provided", 401);
+  }
 });
 
 app.get("/authenticated", function(req, res, next) {
@@ -113,7 +119,8 @@ app.post("/api/generate_cert", function(req, res, next) {
   var creds = req.session.creds;
   if (creds) {
     var email = creds.username;
-    var pubkey = req.body && req.body.pubkey;
+    var pubkeyRaw = req.body && req.body.pubkey;
+    var pubkey = jwk.PublicKey.deserialize(pubkeyRaw); 
 
     if (email && pubkey) {
       certifier.generateCertificate(email, pubkey, function(err, cert) {
