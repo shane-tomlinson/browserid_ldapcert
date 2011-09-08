@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -33,13 +35,29 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+var jwcert = require("./lib/jwcrypto/jwcert"),
+    jwk = require("./lib/jwcrypto/jwk"),
+    KEYPAIR = jwk.KeyPair.generate("RS", 64);
+
+// Who the cert is originating from. AKA - who are we?
+const ISSUER = "mozilla.com";
+
 /**
  * Generates a certificate for the given email address
  * @method generateCertificate
  * @param {string} email - email address to generate certificate for
  * @param {function} callback - callback to call when complete - called with 
- * one string parameter, certificate.
+ * two parameters, the first err, will be null if no error, an object otw, the 
+ * second has the certificate.
  */
-exports.generateCertificate = function(email, callback) {
+function generateCertificate(email, pubkey, callback) {
+  var tok = new jwcert.JWCert(ISSUER, new Date(), pubkey, {
+    email: email
+  });
+  var cert = tok.sign(KEYPAIR.secretKey);
+  if (callback) {
+    callback(null, cert);
+  }
+}
 
-};
+exports.generateCertificate = generateCertificate;

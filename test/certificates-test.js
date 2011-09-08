@@ -35,11 +35,25 @@
 
 var vows = require("vows"),
     assert = require("assert"),
-    certificates = require("../certificates");
-
+    jwk = require("../lib/jwcrypto/jwk"),
+    certificates = require("../certificates"),
+    events = require("events");
+    
+// signing
+var ALG = "RS";
+var KEYSIZE = 64;
 
 vows.describe("certificates")
 .addBatch({
+  "generate cert": {
+    topic: function() {
+      var key = jwk.KeyPair.generate(ALG, KEYSIZE);
+      certificates.generateCertificate("test@test.com", key.publicKey, this.callback);
+    },
+    "cert is proper JWS format": function(err, certificate) {
+      assert.length(certificate.split('.'), 3);
+    }
+  }
 })
 .export(module);
 
