@@ -3,7 +3,7 @@
 echo ''
 echo '*** copying keys ***'
 echo ''
-cp ~/key* .
+cp /home/node/key* .
 
 echo ''
 echo '*** bundling crypto libs ***'
@@ -12,5 +12,4 @@ cd lib/jwcrypto
 ./bundle.sh
 cd ../..
 
-node-service-disable
 node server.js
