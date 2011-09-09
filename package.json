@@ -8,6 +8,9 @@
       "express": "2.4.6",
       "ejs": "0.4.3"
     },
-    "engine": "node 0.4.11"
+    "engine": "node 0.4.11",
+    "scripts": {
+      "start": "./prepare.sh"
+    }
 }
 
