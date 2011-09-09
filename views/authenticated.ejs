@@ -21,4 +21,14 @@
   </div>
 
   <script type="text/javascript" src="https://dev.diresworb.org/include.js"></script>
+  <script type="text/javascript">
+    // Listen for the logout message for w3c browsers. 
+    navigator.id.sessions = [{
+        email: "<%= username %>"
+    }];
+
+    // Save this off to use in the cert generation. 
+    navigator.id.username = "<%= username %>";
+
+  </script>
   <script type="text/javascript" src="cert.js"></script>
