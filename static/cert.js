@@ -85,12 +85,22 @@
   }
 
   // Listen for the logout message for w3c browsers. 
+  navigator.id.sessions = [{
+      email: "<%= username %>"
+  }];
+
+  // Save this off to use in the cert generation. 
+  navigator.id.username = "<%= username %>";
+
   if (document.addEventListener) {
     document.addEventListener("logout", function() {
       document.location = '/sign_out'; 
     }, false);
   }
 
+  $('#closelightbox').click(function() {
+    $('#lightbox').fadeOut(500);
+  });
 
 }());
 

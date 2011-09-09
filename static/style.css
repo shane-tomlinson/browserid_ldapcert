@@ -101,3 +101,67 @@ input[type=email], input[type=password] {
   margin-right: 10px;
 }
 
+#container {
+  width: 1169px;
+  position: relative;
+  margin: 0 auto;
+}
+
+#topname {
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  top: 46px;
+  left: 15px;
+}
+
+#zimbrabg {
+  width: 1169px;
+  height: 768px;
+}
+
+#signout {
+  font-weight: bold;
+  color: #02008B;
+  text-decoration: none;
+  position: absolute;
+  top: 27px;
+  left: 1082px;
+}
+
+#lightbox {
+  background: rgba(0, 0, 0, .8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+#message {
+  border: 5px solid #222;
+  padding: 10px;
+  border-radius: 5px;
+  position: absolute;
+  width: 400px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  margin: -150px 0 0 -200px;
+  display: block;
+  z-index: 2;
+  background-color: #EFE7D4;
+  font-size: 12px;
+}
+
+#message > h3 {
+  color: #B9052D;
+}
+
+#closelightbox {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+

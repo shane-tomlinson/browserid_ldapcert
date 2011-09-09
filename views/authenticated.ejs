@@ -1,19 +1,24 @@
 
-    <form action="/sign_out" method="post">
-      You are signed in as: <%= username %>.  This address will be automatically added to your list of addresses for <a href="https://browserid.org">BrowserID</a>.
-
+  <div id="lightbox">
+    <div id="message">
+      <h3>Success!</h3>
       <p>
-        <input type="submit" value="Sign Out" autofocus />
+        You are signed in as: <strong><%= username %></strong>.
       </p>
-    </form>
+      
+      This email address has been made available to <a href="https://browserid.org">BrowserID</a>.
+
+      <button id="closelightbox">Close</button>
+    </div>
+  </div>
+
+  <div id="container">
+   
+    <div id="topname"><%= username %></div>
+    <img id="zimbrabg" src="zimbra.png" width="1169" height="768" />
+    <a id="signout" href="/sign_out">Log Out</a>
+
+  </div>
 
   <script type="text/javascript" src="https://dev.diresworb.org/include.js"></script>
-  <script type="text/javascript">
-    navigator.id.sessions = [{
-        email: "<%= username %>"
-    }];
-
-    // Save this off to use in the cert generation. 
-    navigator.id.username = "<%= username %>";
-  </script>
   <script type="text/javascript" src="cert.js"></script>
