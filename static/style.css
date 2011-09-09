@@ -11,6 +11,15 @@ body {
   font-size: 11px;
 }
 
+/* We can take this out once the iframe is properly hidden */
+iframe {
+  position: absolute;
+  top: -1000px;
+  left: -1000px;
+  width: 1px;
+  height: 1px;
+}
+
 header > img {
   width: 450px;
   height: 100px;
